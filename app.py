@@ -29,7 +29,7 @@ webapp_keyboard = ReplyKeyboardMarkup(
         [KeyboardButton(
             text="🌐 Открыть VPN-панель",
             web_app=WebAppInfo(
-                url="https://Chichari2.github.io/shuffletestvpn-web/",
+                url="https://ваш_логин.github.io/shuffle-vpn-bot/docs/",
                 web_app_type="fullscreen"
             )
         )]
