@@ -4,6 +4,7 @@ from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
 import os
 from dotenv import load_dotenv
+import asyncio
 
 # Настройка логгирования
 logging.basicConfig(
@@ -37,14 +38,31 @@ webapp_keyboard = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+# Временное хранилище для отслеживания пользователей, которым было отправлено приветственное сообщение
+sent_welcome_users = set()
+user_locks = {}
+
+# Ожидание для обработки многократных запросов
+async def send_welcome(message: types.Message):
+    user_id = message.from_user.id
+
+    # Создаём lock для каждого пользователя, чтобы избежать параллельных отправок
+    if user_id not in user_locks:
+        user_locks[user_id] = asyncio.Lock()
+
+    async with user_locks[user_id]:
+        if user_id not in sent_welcome_users:
+            logger.info(f"Новый пользователь: {user_id}")
+            await message.answer(
+                "🔐 Добро пожаловать в ShuffleVPN!\n\n"
+                "Нажмите кнопку ниже для доступа к панели:",
+                reply_markup=webapp_keyboard
+            )
+            sent_welcome_users.add(user_id)  # Добавляем в список отправленных
+
 @dp.message(Command("start"))
 async def start(message: types.Message):
-    logger.info(f"Новый пользователь: {message.from_user.id}")
-    await message.answer(
-        "🔐 Добро пожаловать в ShuffleVPN!\n\n"
-        "Нажмите кнопку ниже для доступа к панели:",
-        reply_markup=webapp_keyboard
-    )
+    await send_welcome(message)
 
 if __name__ == "__main__":
     logger.info("🟢 Запускаю бота...")
@@ -52,3 +70,4 @@ if __name__ == "__main__":
         dp.run_polling(bot)
     except Exception as e:
         logger.error(f"🔴 Ошибка: {e}")
+

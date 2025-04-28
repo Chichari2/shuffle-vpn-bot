@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>ShuffleVPN Control Panel</title>
+    <meta name="mobile-web-app-capable" content="yes"> <!-- Для Android -->
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Для iOS -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <!-- Цвет статус-бара для iOS -->
+    <meta name="theme-color" content="#4361ee"> <!-- Цвет полосы состояния для Android -->
+    <title>ShuffleVPN Control Panel</title> <!-- Название на веб-странице -->
+    <link rel="icon" type="image/png" href="favicon.png"> <!-- Иконка для приложения -->
     <style>
         :root {
             --primary-color: #4361ee;
@@ -28,27 +32,10 @@
         .app-container {
             width: 100%;
             min-height: 100vh;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: #2b2d42;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #6c757d;
-            font-size: 16px;
         }
 
         .locations-grid {
@@ -102,11 +89,6 @@
 </head>
 <body>
     <div class="app-container">
-        <div class="header">
-            <h1>ShuffleVPN Control Panel</h1>
-            <p>Выберите локацию для подключения</p>
-        </div>
-
         <div class="locations-grid">
             <button class="location-btn" onclick="alert('Подключаемся к США...')">
                 🇺🇸 <span>США</span>
@@ -124,3 +106,4 @@
     </div>
 </body>
 </html>
+
