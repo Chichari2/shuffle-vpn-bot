@@ -1,20 +1,21 @@
 import logging
+import os
+
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, WebAppInfo
-import os
 from dotenv import load_dotenv
 
 # Настройка логгирования
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
+# Загрузка переменных окружения
 load_dotenv()
 
-# Проверка токена
 TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
     logger.error("❌ Токен бота не найден в .env файле!")
@@ -23,17 +24,15 @@ if not TOKEN:
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# Клавиатура с WebApp кнопкой (полноэкранный режим)
+# Клавиатура с WebApp кнопкой
+webapp_url = "https://chichari2.github.io/shuffle-vpn-bot/"
 webapp_keyboard = ReplyKeyboardMarkup(
-    keyboard=[
-        [KeyboardButton(
+    keyboard=[[
+        KeyboardButton(
             text="🌐 Открыть VPN-панель",
-            web_app=WebAppInfo(
-                url="https://chichari2.github.io/shuffle-vpn-bot/",
-                web_app_type="fullscreen"
-            )
-        )]
-    ],
+            web_app=WebAppInfo(url=webapp_url)
+        )
+    ]],
     resize_keyboard=True
 )
 
@@ -47,8 +46,8 @@ async def start(message: types.Message):
     )
 
 if __name__ == "__main__":
-    logger.info("🟢 Запускаю бота...")
+    logger.info("🟢 Запуск бота...")
     try:
-        dp.run_polling(bot)
+        dp.run_polling(bot, skip_updates=True)
     except Exception as e:
         logger.error(f"🔴 Ошибка: {e}")
