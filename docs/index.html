@@ -85,10 +85,26 @@
                 padding: 15px 10px;
             }
         }
+
+        .fullscreen-btn {
+            margin-top: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background: var(--hover-color);
+        }
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <div class="app-container" onclick="goFullScreen()">
         <div class="locations-grid">
             <button class="location-btn" onclick="alert('Подключаемся к США...')">
                 🇺🇸 <span>США</span>
@@ -103,7 +119,27 @@
                 🇰🇿 <span>Казахстан</span>
             </button>
         </div>
+
+        <!-- Кнопка для перехода в полноэкранный режим -->
+        <button class="fullscreen-btn" onclick="goFullScreen()">Перейти в полноэкранный режим</button>
     </div>
+
+    <script>
+        function goFullScreen() {
+            var elem = document.documentElement; // Для полноэкранного режима на всю страницу
+
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { // Для Firefox
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { // Для Chrome и Safari
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // Для IE/Edge
+                elem.msRequestFullscreen();
+            }
+        }
+    </script>
 </body>
 </html>
+
 

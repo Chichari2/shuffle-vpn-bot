@@ -1,3 +1,9 @@
 .env
 
 private_key.pem
+
+.venv
+
+venv
+
+backup-repo.git/
