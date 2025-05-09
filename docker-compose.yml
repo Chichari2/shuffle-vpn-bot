@@ -1,16 +1,36 @@
-version: '3.8'
-
 services:
   bot:
     build: .
     env_file: .env
     restart: always
+    networks:
+      - app_network
 
   nginx:
     image: nginx:latest
     volumes:
-      - ./web:/usr/share/nginx/html
+      - ./docs:/usr/share/nginx/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     ports:
-      - "8080:80"
+      - "80:80"
     restart: always
+    networks:
+      - app_network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: >
+      sh -c "certbot certonly --webroot --webroot-path=/var/www/certbot
+      --email vologdinartem14@gmail.com --agree-tos --no-eff-email
+      -d shufflevpn.ru"
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge

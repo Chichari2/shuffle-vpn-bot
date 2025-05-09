@@ -1,9 +1,10 @@
+# Файлы окружения и ключи
 .env
-
 private_key.pem
 
-.venv
+# Виртуальные окружения
+.venv/
+venv/
 
-venv
-
+# Локальные бэкапы Git
 backup-repo.git/
